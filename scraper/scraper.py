@@ -6,6 +6,9 @@ from selenium.webdriver.edge.options import Options
 import time
 import pandas as pd
 from urllib.parse import urlparse
+import joblib
+
+model = joblib.load(os.path.normpath('env/keyword_intent_model.pkl')) #trained model
 
 def scrape_google(query, max_results=100):
     options = Options()
@@ -50,6 +53,7 @@ def scrape_google(query, max_results=100):
                         date = result.find_element(By.CSS_SELECTOR, "span.news_dt").text
                     except Exception as e:
                         date = "N/A"
+                    intent = model.predict([title])[0]  # Predict the intent
 
                     # Add details to results
                     results.append({
@@ -59,7 +63,8 @@ def scrape_google(query, max_results=100):
                         "Text": text,
                         "Date": date,
                         "Domain": domain,
-                        "URL": url
+                        "URL": url,
+                        "Intent": intent,
                     })
                 except Exception as e:
                     # Handle cases where elements may not be present

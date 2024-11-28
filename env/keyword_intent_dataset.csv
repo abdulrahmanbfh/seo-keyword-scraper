@@ -1,0 +1,4 @@
+Keyword,Intent
+"How to bake a cake?",Informational
+"Buy laptop online",Transactional
+"Facebook login page",Navigational
